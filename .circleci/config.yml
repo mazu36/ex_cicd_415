@@ -1,0 +1,19 @@
+version: 2.1
+
+jobs:
+  creation_infrastructure:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: deploy infrastructure
+          command: |
+            aws cloudformation deploy --stack-name my-test-stack --template-body file://template.yml
+# Orchestrate or schedule a set of jobs
+workflows:
+  # Name the workflow "INFRA"
+  INFRA:
+    # Run the welcome/run job in its own container
+    jobs:
+      - creation_infrastructure
